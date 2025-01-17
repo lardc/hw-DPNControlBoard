@@ -9,7 +9,6 @@
 
 // Functions
 //
-
 void USART1_IRQHandler()
 {
 	if(ZwSCI_RecieveCheck(USART1))
