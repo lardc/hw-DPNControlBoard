@@ -6,7 +6,6 @@
 #include "Controller.h"
 #include "Global.h"
 #include "DataTable.h"
-#include "Measurement.h"
 
 // Functions
 //

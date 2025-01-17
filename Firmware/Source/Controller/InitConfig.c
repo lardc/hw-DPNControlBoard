@@ -81,6 +81,7 @@ void INITCFG_ConfigADC()
 	ADC_SoftTrigConfig(ADC1);
 	ADC_ChannelSeqReset(ADC1);
 	ADC_Enable(ADC1);
+	ADC_SamplingStart(ADC1);
 }
 //------------------------------------
 
