@@ -17,22 +17,26 @@
 #include "ZwNFLASH.h"
 
 // Определения для аналоговых портов
-GPIO_PortPinSettingMacro GPIO_MSR_IGBT_UG 			= {GPIOA, Pin_7};
-GPIO_PortPinSettingMacro GPIO_MSR_UD 				= {GPIOB, Pin_13};
-GPIO_PortPinSettingMacro GPIO_MSR_ID				= {GPIOB, Pin_12};
-GPIO_PortPinSettingMacro GPIO_ID_RANGE				= {GPIOB, Pin_14};
+GPIO_PortPinSettingMacro GPIO_MSR_HV 			= {GPIOA, Pin_0};
+GPIO_PortPinSettingMacro GPIO_MSR_PRESSURE		= {GPIOA, Pin_1};
 
 // Определения для выходных портов
-GPIO_PortPinSettingMacro GPIO_LED 					= {GPIOA, Pin_8};
-GPIO_PortPinSettingMacro GPIO_GATE_EN				= {GPIOA, Pin_0};
-GPIO_PortPinSettingMacro GPIO_TGATE_ST				= {GPIOA, Pin_6};
-GPIO_PortPinSettingMacro GPIO_SYNC_OSC				= {GPIOA, Pin_15};
-GPIO_PortPinSettingMacro GPIO_AIN_ST				= {GPIOB, Pin_15};
-GPIO_PortPinSettingMacro GPIO_SYNC_LCSU				= {GPIOB, Pin_5};
-GPIO_PortPinSettingMacro GPIO_IND_CTRL				= {GPIOB, Pin_6};
+GPIO_PortPinSettingMacro GPIO_LED 					= {GPIOB, Pin_12};
+GPIO_PortPinSettingMacro GPIO_CONT1					= {GPIOA, Pin_15};
+GPIO_PortPinSettingMacro GPIO_CONT2					= {GPIOB, Pin_4};
+GPIO_PortPinSettingMacro GPIO_CONT3					= {GPIOB, Pin_6};
+GPIO_PortPinSettingMacro GPIO_CONT4					= {GPIOB, Pin_8};
+GPIO_PortPinSettingMacro GPIO_CONT5					= {GPIOC, Pin_13};
+GPIO_PortPinSettingMacro GPIO_CHARGE				= {GPIOB, Pin_15};
+GPIO_PortPinSettingMacro GPIO_DISCHARGE				= {GPIOB, Pin_14};
 
-// Определения для выходных портов
-GPIO_PortPinSettingMacro GPIO_SAFETY				= {GPIOB, Pin_4};
+// Определения для входных портов
+GPIO_PortPinSettingMacro GPIO_SAFETY				= {GPIOA, Pin_8};
+GPIO_PortPinSettingMacro GPIO_CONT_SENS1			= {GPIOB, Pin_3};
+GPIO_PortPinSettingMacro GPIO_CONT_SENS2			= {GPIOB, Pin_5};
+GPIO_PortPinSettingMacro GPIO_CONT_SENS3			= {GPIOB, Pin_7};
+GPIO_PortPinSettingMacro GPIO_CONT_SENS4			= {GPIOB, Pin_9};
+GPIO_PortPinSettingMacro GPIO_CONT_SENS5			= {GPIOC, Pin_14};
 
 // Определения для портов альтернативных функций
 GPIO_PortPinSettingMacro GPIO_ALT_CAN_RX 			= {GPIOA, Pin_11};
