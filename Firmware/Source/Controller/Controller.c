@@ -11,6 +11,7 @@
 #include "BCCIxParams.h"
 #include "math.h"
 #include "InitConfig.h"
+#include "Delay.h"
 // Types
 //
 typedef void (*FUNC_AsyncDelegate)();
@@ -29,6 +30,8 @@ void CONTROL_ResetToDefaults();
 void CONTROL_ResetData();
 void CONTROL_ResetHardware();
 void CONTROL_WatchDogUpdate();
+void CONTROL_SetPosition(DUTPosition Position);
+void CONTROL_SetInductance(Inductance Coil);
 
 // Functions
 //
@@ -49,6 +52,7 @@ void CONTROL_ResetToDefaults()
 {
 	CONTROL_ResetData();
 	CONTROL_ResetHardware();
+
 	CONTROL_SetDeviceState(DS_None, SS_None);
 }
 //-----------------------------------------------
@@ -65,7 +69,11 @@ void CONTROL_ResetData()
 
 void CONTROL_ResetHardware()
 {
-
+	LL_ClampAdapter(false);
+	CONTROL_SetPosition(Off);
+	CONTROL_SetInductance(L_300uH);
+	LL_Charge(false);
+	LL_Discharge(false);
 }
 //-----------------------------------------------
 
@@ -118,6 +126,48 @@ void CONTROL_Idle()
 	DEVPROFILE_ProcessRequests();
 
 	CONTROL_WatchDogUpdate();
+}
+//-----------------------------------------------
+
+void CONTROL_SetPosition(DUTPosition Position)
+{
+	LL_SetTopPosition(false);
+	LL_SetBotPosition(false);
+	DELAY_MS(CONTACTOR_DELAY);
+
+	if(Position == Top)
+	{
+		LL_SetTopPosition(true);
+		DELAY_MS(CONTACTOR_DELAY);
+	}
+
+	if(Position == Bot)
+	{
+		LL_SetBotPosition(true);
+		DELAY_MS(CONTACTOR_DELAY);
+	}
+}
+//-----------------------------------------------
+
+void CONTROL_SetInductance(Inductance Coil)
+{
+	if(Coil == L_300uH)
+	{
+		LL_SwitchCoil1(false);
+		LL_SwitchCoil2(false);
+	}
+	else if(Coil == L_100uH)
+	{
+		LL_SwitchCoil1(true);
+		LL_SwitchCoil2(false);
+	}
+	else if(Coil == L_30uH)
+	{
+		LL_SwitchCoil1(true);
+		LL_SwitchCoil2(true);
+	}
+
+	DELAY_MS(CONTACTOR_DELAY);
 }
 //-----------------------------------------------
 

@@ -20,6 +20,20 @@ typedef enum __DeviceSubState
 	SS_None				= 0
 } DeviceSubState;
 
+typedef enum __DUTPosition
+{
+	Off					= 0,
+	Top					= 1,
+	Bot					= 2
+} DUTPosition;
+
+typedef enum __Inductance
+{
+	L_300uH				= 0,
+	L_100uH				= 1,
+	L_30uH				= 2
+}Inductance;
+
 // Variables
 //
 extern volatile Int64U CONTROL_TimeCounter;
