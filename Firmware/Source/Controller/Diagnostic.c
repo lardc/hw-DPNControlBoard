@@ -7,6 +7,7 @@
 #include "DataTable.h"
 #include "DeviceObjectDictionary.h"
 #include "Controller.h"
+#include "Global.h"
 
 // Functions
 //
@@ -14,21 +15,15 @@ bool DIAG_HandleDiagnosticAction(Int16U ActionID, Int16U *pUserError)
 {
 	switch (ActionID)
 	{
-		case ACT_DBG_CLAMP_ADAPTER:
-			LL_ClampAdapter(DataTable[REG_DBG]);
-			DELAY_MS(100);
-			DataTable[REG_DBG] = LL_CheckAdapter();
-			break;
-
 		case ACT_DBG_SET_TOP_POSITION:
 			LL_SetTopPosition(DataTable[REG_DBG]);
-			DELAY_MS(100);
+			DELAY_MS(CONTACTOR_DELAY);
 			DataTable[REG_DBG] = LL_CheckTopPosition();
 			break;
 
 		case ACT_DBG_SET_BOT_POSITION:
 			LL_SetBotPosition(DataTable[REG_DBG]);
-			DELAY_MS(100);
+			DELAY_MS(CONTACTOR_DELAY);
 			DataTable[REG_DBG] = LL_CheckBotPosition();
 			break;
 
@@ -38,17 +33,17 @@ bool DIAG_HandleDiagnosticAction(Int16U ActionID, Int16U *pUserError)
 				if(DataTable[REG_DBG] == 1)
 				{
 					LL_SwitchCoil2(false);
-					DELAY_MS(100);
+					DELAY_MS(CONTACTOR_DELAY);
 					LL_SwitchCoil1(true);
-					DELAY_MS(100);
+					DELAY_MS(CONTACTOR_DELAY);
 				}
 
 				if(DataTable[REG_DBG] == 2)
 				{
 					LL_SwitchCoil1(false);
-					DELAY_MS(100);
+					DELAY_MS(CONTACTOR_DELAY);
 					LL_SwitchCoil2(true);
-					DELAY_MS(100);
+					DELAY_MS(CONTACTOR_DELAY);
 				}
 			}
 			else
@@ -57,7 +52,7 @@ bool DIAG_HandleDiagnosticAction(Int16U ActionID, Int16U *pUserError)
 				LL_SwitchCoil2(false);
 			}
 
-			DELAY_MS(100);
+			DELAY_MS(CONTACTOR_DELAY);
 			DataTable[REG_DBG] = (Int16U)(LL_CheckCoil1() | LL_CheckCoil2() << 1);
 			 break;
 

@@ -7,14 +7,15 @@
 #define ACT_FAULT_CLEAR					3	// Очистка fault
 #define ACT_WARNING_CLEAR				4	// Очистка warning
 //
-#define ACT_DBG_CLAMP_ADAPTER			10	// Управление адаптеров в отладочном режиме
-#define ACT_DBG_SET_TOP_POSITION		11	// Установить тест верхнего ключа в отладочном режиме
-#define ACT_DBG_SET_BOT_POSITION		12	// Установить тест нижнего ключа в отладочном режиме
-#define ACT_DBG_SET_COIL				13	// Установить индуктивность в отладочном режиме
-#define ACT_DBG_CHARGE					14	// Управление зарядом в отладочном режиме
-#define ACT_DBG_DISCHARGE				15	// Управление разрядом в отладочном режиме
-#define ACT_DBG_HV_MEASURE				16	// Получение сырых данных HV напряжения в отладочном режиме
-#define ACT_DBG_PRESSURE_MEASURE		17	// Получение сырых данных давления в отладочном режиме
+#define ACT_DBG_SET_TOP_POSITION		10	// Установить тест верхнего ключа в отладочном режиме
+#define ACT_DBG_SET_BOT_POSITION		11	// Установить тест нижнего ключа в отладочном режиме
+#define ACT_DBG_SET_COIL				12	// Установить индуктивность в отладочном режиме
+#define ACT_DBG_CHARGE					13	// Управление зарядом в отладочном режиме
+#define ACT_DBG_DISCHARGE				14	// Управление разрядом в отладочном режиме
+#define ACT_DBG_HV_MEASURE				15	// Получение сырых данных HV напряжения в отладочном режиме
+#define ACT_DBG_PRESSURE_MEASURE		16	// Получение сырых данных давления в отладочном режиме
+//
+#define ACT_CONFIG						100	// Конфигурация узла по заданным параметрам
 //
 #define ACT_SAVE_TO_ROM					200	// Сохранение пользовательских данных во FLASH процессора
 #define ACT_RESTORE_FROM_ROM			201	// Восстановление данных из FLASH
@@ -29,7 +30,9 @@
 //
 
 // Несохраняемы регистры чтения-записи
-
+#define REG_VOLTAGE						128	// Напряжение испытания, В
+#define REG_DUT_POSITION				129	// Позиция DUT
+#define REG_INDUCTANCE					130	// Задание индуктивности силового контура
 //
 #define REG_DBG							150	// Отладочный регистр
 

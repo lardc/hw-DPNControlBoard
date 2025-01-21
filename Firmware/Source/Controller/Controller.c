@@ -20,6 +20,7 @@ typedef void (*FUNC_AsyncDelegate)();
 DeviceState CONTROL_State = DS_None;
 static Boolean CycleActive = false;
 DeviceSubState SUB_State = SS_None;
+ChargeState	CapChargeState = PassiveDischarge;
 
 volatile Int64U CONTROL_TimeCounter = 0;
 
@@ -69,7 +70,6 @@ void CONTROL_ResetData()
 
 void CONTROL_ResetHardware()
 {
-	LL_ClampAdapter(false);
 	CONTROL_SetPosition(Off);
 	CONTROL_SetInductance(L_300uH);
 	LL_Charge(false);
@@ -86,7 +86,7 @@ static Boolean CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_ENABLE_POWER:
 			{
 				if(CONTROL_State == DS_None)
-					CONTROL_SetDeviceState(DS_InProcess, SS_None);
+					CONTROL_SetDeviceState(DS_Ready, SS_None);
 				else if(CONTROL_State != DS_Ready)
 					*pUserError = ERR_OPERATION_BLOCKED;
 			}
@@ -168,6 +168,30 @@ void CONTROL_SetInductance(Inductance Coil)
 	}
 
 	DELAY_MS(CONTACTOR_DELAY);
+}
+//-----------------------------------------------
+
+void CONTROL_BatteryCharge()
+{
+	if(CONTROL_State == DS_Ready || CONTROL_State == DS_BatteryCharge)
+	{
+		switch(CapChargeState)
+		{
+			case PassiveDischarge:
+				break;
+
+			case ActiveDischarge:
+				break;
+
+			case Charge:
+				break;
+		}
+	}
+	else
+	{
+		LL_Charge(false);
+		LL_Discharge(true);
+	}
 }
 //-----------------------------------------------
 

@@ -7,14 +7,12 @@
 // Functions
 //
 void LL_ToggleBoardLED();
-void LL_ClampAdapter(bool State);
 void LL_SetTopPosition(bool State);
 void LL_SetBotPosition(bool State);
 void LL_SwitchCoil1(bool State);
 void LL_SwitchCoil2(bool State);
 void LL_Charge(bool State);
 void LL_Discharge(bool State);
-bool LL_CheckAdapter();
 bool LL_CheckTopPosition();
 bool LL_CheckBotPosition();
 bool LL_CheckCoil1();

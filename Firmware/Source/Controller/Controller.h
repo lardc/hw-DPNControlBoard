@@ -11,8 +11,7 @@ typedef enum __DeviceState
 	DS_Fault			= 1,
 	DS_Disabled			= 2,
 	DS_BatteryCharge	= 3,
-	DS_Ready			= 4,
-	DS_InProcess		= 5
+	DS_Ready			= 4
 } DeviceState;
 
 typedef enum __DeviceSubState
@@ -33,6 +32,13 @@ typedef enum __Inductance
 	L_100uH				= 1,
 	L_30uH				= 2
 }Inductance;
+
+typedef enum __ChargeState
+{
+	PassiveDischarge	= 0,
+	ActiveDischarge		= 1,
+	Charge				= 2
+}ChargeState;
 
 // Variables
 //

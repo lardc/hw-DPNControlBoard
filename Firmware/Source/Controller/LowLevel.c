@@ -13,33 +13,27 @@ void LL_ToggleBoardLED()
 }
 //------------------------------------
 
-void LL_ClampAdapter(bool State)
+void LL_SetTopPosition(bool State)
 {
 	GPIO_SetState(GPIO_CONT1, State);
 }
 //------------------------------------
 
-void LL_SetTopPosition(bool State)
+void LL_SetBotPosition(bool State)
 {
 	GPIO_SetState(GPIO_CONT2, State);
 }
 //------------------------------------
 
-void LL_SetBotPosition(bool State)
+void LL_SwitchCoil1(bool State)
 {
 	GPIO_SetState(GPIO_CONT3, State);
 }
 //------------------------------------
 
-void LL_SwitchCoil1(bool State)
-{
-	GPIO_SetState(GPIO_CONT4, State);
-}
-//------------------------------------
-
 void LL_SwitchCoil2(bool State)
 {
-	GPIO_SetState(GPIO_CONT5, State);
+	GPIO_SetState(GPIO_CONT4, State);
 }
 //------------------------------------
 
@@ -55,33 +49,27 @@ void LL_Discharge(bool State)
 }
 //------------------------------------
 
-bool LL_CheckAdapter()
+bool LL_CheckTopPosition()
 {
 	return GPIO_GetState(GPIO_CONT1);
 }
 //------------------------------------
 
-bool LL_CheckTopPosition()
+bool LL_CheckBotPosition()
 {
 	return GPIO_GetState(GPIO_CONT2);
 }
 //------------------------------------
 
-bool LL_CheckBotPosition()
+bool LL_CheckCoil1()
 {
 	return GPIO_GetState(GPIO_CONT3);
 }
 //------------------------------------
 
-bool LL_CheckCoil1()
-{
-	return GPIO_GetState(GPIO_CONT4);
-}
-//------------------------------------
-
 bool LL_CheckCoil2()
 {
-	return GPIO_GetState(GPIO_CONT5);
+	return GPIO_GetState(GPIO_CONT4);
 }
 //------------------------------------
 

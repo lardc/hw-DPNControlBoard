@@ -26,7 +26,6 @@ GPIO_PortPinSettingMacro GPIO_CONT1					= {GPIOA, Pin_15};
 GPIO_PortPinSettingMacro GPIO_CONT2					= {GPIOB, Pin_4};
 GPIO_PortPinSettingMacro GPIO_CONT3					= {GPIOB, Pin_6};
 GPIO_PortPinSettingMacro GPIO_CONT4					= {GPIOB, Pin_8};
-GPIO_PortPinSettingMacro GPIO_CONT5					= {GPIOC, Pin_13};
 GPIO_PortPinSettingMacro GPIO_CHARGE				= {GPIOB, Pin_15};
 GPIO_PortPinSettingMacro GPIO_DISCHARGE				= {GPIOB, Pin_14};
 
@@ -36,7 +35,6 @@ GPIO_PortPinSettingMacro GPIO_CONT_SENS1			= {GPIOB, Pin_3};
 GPIO_PortPinSettingMacro GPIO_CONT_SENS2			= {GPIOB, Pin_5};
 GPIO_PortPinSettingMacro GPIO_CONT_SENS3			= {GPIOB, Pin_7};
 GPIO_PortPinSettingMacro GPIO_CONT_SENS4			= {GPIOB, Pin_9};
-GPIO_PortPinSettingMacro GPIO_CONT_SENS5			= {GPIOC, Pin_14};
 
 // Определения для портов альтернативных функций
 GPIO_PortPinSettingMacro GPIO_ALT_CAN_RX 			= {GPIOA, Pin_11};

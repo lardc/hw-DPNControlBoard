@@ -33,7 +33,6 @@ void INITCFG_ConfigGPIO()
 	GPIO_InitPushPullOutput(GPIO_CONT2);
 	GPIO_InitPushPullOutput(GPIO_CONT3);
 	GPIO_InitPushPullOutput(GPIO_CONT4);
-	GPIO_InitPushPullOutput(GPIO_CONT5);
 	GPIO_InitPushPullOutput(GPIO_CHARGE);
 	GPIO_InitPushPullOutput(GPIO_DISCHARGE);
 
@@ -43,7 +42,6 @@ void INITCFG_ConfigGPIO()
 	GPIO_SetState(GPIO_CONT2, false);
 	GPIO_SetState(GPIO_CONT3, false);
 	GPIO_SetState(GPIO_CONT4, false);
-	GPIO_SetState(GPIO_CONT5, false);
 	GPIO_SetState(GPIO_CHARGE, false);
 	GPIO_SetState(GPIO_DISCHARGE, false);
 	
