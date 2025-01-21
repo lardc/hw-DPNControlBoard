@@ -36,6 +36,12 @@
 #define VOLTAGE_MIN					100
 #define VOLTAGE_MAX					1800
 #define VOLTAGE_DEF					1000
+//
+#define PRESSURE_K_DEF				1
+#define PRESSURE_B_DEF				0
+#define PRESSURE_LOW_MIN			2
+#define PRESSURE_LOW_MAX			8
+#define PRESSURE_LOW_DEF			5
 
 
 // Types

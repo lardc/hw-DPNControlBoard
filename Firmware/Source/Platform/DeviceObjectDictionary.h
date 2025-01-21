@@ -29,6 +29,9 @@
 #define REG_VCAP_K						0	// Коэффициент пересчета АЦП -> В напряжение на конденсаторах
 #define REG_VCAP_B						1	// Смещение пересчета АЦП -> В напряжение на конденсаторах
 #define REG_CHARGE_THRESHOLD			2	// Порог включения заряда или активного разряда, В
+#define REG_PRESSURE_K					3	// Коэффициент пересчета АЦП -> Бар текущего давления
+#define REG_PRESSURE_B					4	// Коэффициент смещения АЦП -> Бар текущего давления
+#define REG_PRESSURE_LOW				5	// Нижний порог допустимого давления, Бар
 //
 
 // Несохраняемы регистры чтения-записи
@@ -48,6 +51,7 @@
 #define REG_SELF_TEST_OP_RESULT			198	// Регистр результата самотестирования
 //
 #define REG_CAP_VOLTAGE					200	// Напряжение на конденсаторах, В
+#define REG_PRESSURE					201	// Текущее давление, Бар
 //
 #define REG_FWINFO_SLAVE_NID			256	// Device CAN slave node ID
 #define REG_FWINFO_MASTER_NID			257	// Device CAN master node ID (if presented)

@@ -9,9 +9,9 @@ const TableItemConstraint Constraint[DATA_TABLE_WP_START] = {
 		{COEF_K_MIN, COEF_K_MAX, VCAP_K_DEF},									// 0
 		{COEF_B_MIN, COEF_B_MAX, VCAP_B_DEF},									// 1
 		{CHARGE_THRESHOLD_MIN, CHARGE_THRESHOLD_MAX, CHARGE_THRESHOLD_DEF},		// 2
-		{0, 0, 0},																// 3
-		{0, 0, 0},																// 4
-		{0, 0, 0},																// 5
+		{COEF_K_MIN, COEF_K_MAX, PRESSURE_K_DEF},								// 3
+		{COEF_B_MIN, COEF_B_MAX, PRESSURE_B_DEF},								// 4
+		{PRESSURE_LOW_MIN, PRESSURE_LOW_MAX, PRESSURE_LOW_DEF},					// 5
 		{0, 0, 0},																// 6
 		{0, 0, 0},																// 7
 		{0, 0, 0},																// 8

@@ -40,6 +40,7 @@ void CONTROL_CacheVariables();
 void CONTROL_Commutation();
 void CONTROL_CheckInductance(Inductance Coil);
 void CONTROL_CheckDUTPosition(DUTPosition Position);
+void CONTROL_Ressure();
 
 // Functions
 //
@@ -102,7 +103,7 @@ static Boolean CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_DISABLE_POWER:
 			{
 				if(CONTROL_State == DS_Ready)
-					CONTROL_SetDeviceState(DS_None);
+					CONTROL_ResetToDefaults();
 				else if(CONTROL_State != DS_None)
 					*pUserError = ERR_OPERATION_BLOCKED;
 			}
@@ -136,10 +137,29 @@ void CONTROL_Idle()
 {
 	CONTROL_BatteryCharge();
 	CONTROL_Commutation();
+	CONTROL_Ressure();
 
 	// Обработка мастер-запросов по интерфейсу
 	DEVPROFILE_ProcessRequests();
 	CONTROL_WatchDogUpdate();
+}
+//-----------------------------------------------
+
+void CONTROL_Ressure()
+{
+	static Int64U PressureCheckDelay = 0;
+
+	DataTable[REG_PRESSURE] = LL_MeasurePressure() * DataTable[REG_PRESSURE_K] + DataTable[REG_PRESSURE_B];
+
+	if((CONTROL_State != DS_Ready || CONTROL_State != DS_InProcess) && DataTable[REG_PRESSURE] <= DataTable[REG_PRESSURE_LOW])
+	{
+		if(!PressureCheckDelay)
+			PressureCheckDelay = CONTROL_TimeCounter + PRESSURE_CHECK_DELAY;
+		else if(CONTROL_TimeCounter >= PressureCheckDelay)
+			CONTROL_SwitchToFault(DF_PRESSURE);
+	}
+	else
+		PressureCheckDelay = 0;
 }
 //-----------------------------------------------
 
@@ -213,15 +233,18 @@ void CONTROL_Commutation()
 	static Inductance LastInductance = L_300uH;
 	static DUTPosition LastDUTPosition = Off;
 
-	if(LastInductance != CachedInductance)
-		CONTROL_SetInductance(CachedInductance, &LastInductance);
-	else
-		CONTROL_CheckInductance(LastInductance);
+	if(CONTROL_State != DS_Ready && CONTROL_State != DS_InProcess)
+	{
+		if(LastInductance != CachedInductance)
+			CONTROL_SetInductance(CachedInductance, &LastInductance);
+		else
+			CONTROL_CheckInductance(LastInductance);
 
-	if(LastDUTPosition != CachedDUTPosition)
-		CONTROL_SetDUTPosition(CachedDUTPosition, &LastDUTPosition);
-	else
-		CONTROL_CheckDUTPosition(LastDUTPosition);
+		if(LastDUTPosition != CachedDUTPosition)
+			CONTROL_SetDUTPosition(CachedDUTPosition, &LastDUTPosition);
+		else
+			CONTROL_CheckDUTPosition(LastDUTPosition);
+	}
 }
 //-----------------------------------------------
 
