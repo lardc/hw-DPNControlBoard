@@ -22,7 +22,9 @@ static Boolean CycleActive = false;
 ChargeState	CapChargeState = PassiveDischarge;
 float 	CachedCapVoltage = 0;
 DUTPosition CachedDUTPosition = Off;
+DUTPosition LastDUTPosition = Off;
 Inductance CachedInductance = L_300uH;
+Inductance LastInductance = L_300uH;
 
 volatile Int64U CONTROL_TimeCounter = 0;
 
@@ -230,9 +232,6 @@ void CONTROL_SetInductance(Inductance Coil, Inductance *LastCoil)
 
 void CONTROL_Commutation()
 {
-	static Inductance LastInductance = L_300uH;
-	static DUTPosition LastDUTPosition = Off;
-
 	if(CONTROL_State != DS_Ready && CONTROL_State != DS_InProcess)
 	{
 		if(LastInductance != CachedInductance)
@@ -347,6 +346,9 @@ void CONTROL_BatteryCharge()
 		LL_Charge(false);
 		LL_Discharge(true);
 	}
+
+	if(CONTROL_State == DS_InProcess && LastDUTPosition == CachedDUTPosition && LastInductance == CachedInductance && CapChargeState == PassiveDischarge)
+		CONTROL_SetDeviceState(DS_Ready);
 }
 //-----------------------------------------------
 
