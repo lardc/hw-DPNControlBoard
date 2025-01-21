@@ -1,6 +1,9 @@
 ﻿// Header
 #include "Constraints.h"
 
+// Include
+#include "Controller.h"
+
 // Constants
 const TableItemConstraint Constraint[DATA_TABLE_WP_START] = {
 		{COEF_K_MIN, COEF_K_MAX, VCAP_K_DEF},									// 0
@@ -131,9 +134,9 @@ const TableItemConstraint Constraint[DATA_TABLE_WP_START] = {
 		{0, 0, 0},																// 125
 		{0, 0, 0},																// 126
 		{0, 0, 0},																// 127
-		{0, 0, 0},																// 128
-		{0, 0, 0},																// 129
-		{0, 0, 0},																// 130
+		{VOLTAGE_MIN, VOLTAGE_MAX, VOLTAGE_DEF},								// 128
+		{Off, Bot, Off},														// 129
+		{L_300uH, L_30uH, L_300uH},												// 130
 		{0, 0, 0},																// 131
 		{0, 0, 0},																// 132
 		{0, 0, 0},																// 133

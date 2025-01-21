@@ -46,7 +46,6 @@
 #define REG_PROBLEM						196	// Регистр Problem
 #define REG_OP_RESULT					197	// Регистр результата операции
 #define REG_SELF_TEST_OP_RESULT			198	// Регистр результата самотестирования
-#define REG_SUB_STATE					199	// Регистр вспомогательного состояния
 //
 #define REG_CAP_VOLTAGE					200	// Напряжение на конденсаторах, В
 //
@@ -66,6 +65,11 @@
 
 // Fault and disable codes
 #define DF_NONE							0	// Ошибок нет
+#define DF_TOP_POSITION					1	// Ошибка положения контактора верхней позиции
+#define DF_BOT_POSITION					2	// Ошибка положения контактора нижней позиции
+#define DF_COIL1						3	// Ошибка положения контактора катушки 1
+#define DF_COIL2						4	// Ошибка положения контактора катушки 2
+#define DF_PRESSURE						5	// Нет давления
 
 // Warning
 #define WARNING_NONE					0	// Предупреждений нет

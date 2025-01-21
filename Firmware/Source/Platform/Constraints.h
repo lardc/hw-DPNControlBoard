@@ -30,8 +30,12 @@
 #define VCAP_B_DEF					0
 //
 #define CHARGE_THRESHOLD_MIN		1.0
-#define CHARGE_THRESHOLD_MAX		50
-#define CHARGE_THRESHOLD_DEF		20
+#define CHARGE_THRESHOLD_MAX		10
+#define CHARGE_THRESHOLD_DEF		5
+//
+#define VOLTAGE_MIN					100
+#define VOLTAGE_MAX					1800
+#define VOLTAGE_DEF					1000
 
 
 // Types
