@@ -3,9 +3,9 @@
 
 // Constants
 const TableItemConstraint Constraint[DATA_TABLE_WP_START] = {
-		{0, 0, 0},																// 0
-		{0, 0, 0},																// 1
-		{0, 0, 0},																// 2
+		{COEF_K_MIN, COEF_K_MAX, VCAP_K_DEF},									// 0
+		{COEF_B_MIN, COEF_B_MAX, VCAP_B_DEF},									// 1
+		{CHARGE_THRESHOLD_MIN, CHARGE_THRESHOLD_MAX, CHARGE_THRESHOLD_DEF},		// 2
 		{0, 0, 0},																// 3
 		{0, 0, 0},																// 4
 		{0, 0, 0},																// 5

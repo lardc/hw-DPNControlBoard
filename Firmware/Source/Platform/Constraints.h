@@ -26,6 +26,12 @@
 #define COEF_B_MIN					-INT16S_MAX
 #define COEF_B_MAX					INT16S_MAX
 //
+#define VCAP_K_DEF					1.0
+#define VCAP_B_DEF					0
+//
+#define CHARGE_THRESHOLD_MIN		1.0
+#define CHARGE_THRESHOLD_MAX		50
+#define CHARGE_THRESHOLD_DEF		20
 
 
 // Types

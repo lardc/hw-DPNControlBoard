@@ -21,6 +21,9 @@ DeviceState CONTROL_State = DS_None;
 static Boolean CycleActive = false;
 DeviceSubState SUB_State = SS_None;
 ChargeState	CapChargeState = PassiveDischarge;
+float 	CapVoltageCached = 0;
+DUTPosition DUTPositionCached = Off;
+Inductance InductanceCached = L_300uH;
 
 volatile Int64U CONTROL_TimeCounter = 0;
 
@@ -33,6 +36,8 @@ void CONTROL_ResetHardware();
 void CONTROL_WatchDogUpdate();
 void CONTROL_SetPosition(DUTPosition Position);
 void CONTROL_SetInductance(Inductance Coil);
+void CONTROL_BatteryCharge();
+void CONTROL_CacheVariables();
 
 // Functions
 //
@@ -122,9 +127,10 @@ static Boolean CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 
 void CONTROL_Idle()
 {
+	CONTROL_BatteryCharge();
+
 	// Обработка мастер-запросов по интерфейсу
 	DEVPROFILE_ProcessRequests();
-
 	CONTROL_WatchDogUpdate();
 }
 //-----------------------------------------------
@@ -173,27 +179,51 @@ void CONTROL_SetInductance(Inductance Coil)
 
 void CONTROL_BatteryCharge()
 {
-	if(CONTROL_State == DS_Ready || CONTROL_State == DS_BatteryCharge)
+	DataTable[REG_CAP_VOLTAGE] = LL_MeasureHV() * DataTable[REG_VCAP_K] + DataTable[REG_VCAP_B];
+
+	if(CONTROL_State == DS_Ready || CONTROL_State == DS_InProcess)
 	{
+		if((DataTable[REG_CAP_VOLTAGE] - CapVoltageCached) >= DataTable[REG_CHARGE_THRESHOLD])
+			CapChargeState = ActiveDischarge;
+		else if((DataTable[REG_CAP_VOLTAGE] - CapVoltageCached) <= ((-1) * DataTable[REG_CHARGE_THRESHOLD]))
+			CapChargeState = Charge;
+		else
+			CapChargeState = PassiveDischarge;
+
 		switch(CapChargeState)
 		{
 			case PassiveDischarge:
+				LL_Charge(false);
+				LL_Discharge(false);
 				break;
 
 			case ActiveDischarge:
+				LL_Charge(false);
+				LL_Discharge(true);
 				break;
 
 			case Charge:
+				LL_Charge(true);
+				LL_Discharge(false);
 				break;
 		}
 	}
 	else
 	{
+		CapChargeState = ActiveDischarge;
+
 		LL_Charge(false);
 		LL_Discharge(true);
 	}
 }
 //-----------------------------------------------
+
+void CONTROL_CacheVariables()
+{
+	CapVoltageCached = DataTable[REG_VOLTAGE];
+	DUTPositionCached = DataTable[REG_DUT_POSITION];
+	InductanceCached = DataTable[REG_INDUCTANCE];
+}
 
 void CONTROL_SwitchToFault(Int16U Reason)
 {

@@ -26,7 +26,9 @@
 
 // Регистры
 // Сохраняемые регистры
-
+#define REG_VCAP_K						0	// Коэффициент пересчета АЦП -> В напряжение на конденсаторах
+#define REG_VCAP_B						1	// Смещение пересчета АЦП -> В напряжение на конденсаторах
+#define REG_CHARGE_THRESHOLD			2	// Порог включения заряда или активного разряда, В
 //
 
 // Несохраняемы регистры чтения-записи
@@ -45,6 +47,8 @@
 #define REG_OP_RESULT					197	// Регистр результата операции
 #define REG_SELF_TEST_OP_RESULT			198	// Регистр результата самотестирования
 #define REG_SUB_STATE					199	// Регистр вспомогательного состояния
+//
+#define REG_CAP_VOLTAGE					200	// Напряжение на конденсаторах, В
 //
 #define REG_FWINFO_SLAVE_NID			256	// Device CAN slave node ID
 #define REG_FWINFO_MASTER_NID			257	// Device CAN master node ID (if presented)
