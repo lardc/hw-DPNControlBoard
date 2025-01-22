@@ -355,14 +355,25 @@ bool CONTROL_CheckDUTPosition(DUTPosition Position)
 
 void CONTROL_BatteryCharge()
 {
+	static Int64U Timeout = 0;
+
 	DataTable[REG_CAP_VOLTAGE] = LL_MeasureHV() * DataTable[REG_VCAP_K] + DataTable[REG_VCAP_B];
 
 	if(CONTROL_State == DS_Ready && CONTROL_State == DS_InProcess)
 	{
-		if((DataTable[REG_CAP_VOLTAGE] - CachedCapVoltage) >= DataTable[REG_CHARGE_THRESHOLD])
+		if(((DataTable[REG_CAP_VOLTAGE] - CachedCapVoltage) >= DataTable[REG_CHARGE_THRESHOLD]) && (CapChargeState != ActiveDischarge))
+		{
 			CapChargeState = ActiveDischarge;
+			Timeout = CONTROL_State + DISCHARGE_TIMEOUT;
+		}
 		else if((DataTable[REG_CAP_VOLTAGE] - CachedCapVoltage) <= ((-1) * DataTable[REG_CHARGE_THRESHOLD]))
-			CapChargeState = Charge;
+		{
+			if(CapChargeState != ActiveDischarge)
+			{
+				Timeout = CONTROL_State + CHARGE_TIMEOUT;
+				CapChargeState = Charge;
+			}
+		}
 		else
 			CapChargeState = PassiveDischarge;
 
@@ -376,11 +387,17 @@ void CONTROL_BatteryCharge()
 			case ActiveDischarge:
 				LL_Charge(false);
 				LL_Discharge(true);
+
+				if(CONTROL_TimeCounter >= Timeout)
+					CONTROL_SwitchToFault(DF_DISCHARGE);
 				break;
 
 			case Charge:
 				LL_Charge(true);
 				LL_Discharge(false);
+
+				if(CONTROL_TimeCounter >= Timeout)
+					CONTROL_SwitchToFault(DF_CHARGE);
 				break;
 		}
 	}
