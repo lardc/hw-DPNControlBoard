@@ -43,6 +43,7 @@ void CONTROL_Commutation();
 void CONTROL_CheckInductance(Inductance Coil);
 void CONTROL_CheckDUTPosition(DUTPosition Position);
 void CONTROL_Ressure();
+void CONTROL_Safety();
 
 // Functions
 //
@@ -83,7 +84,7 @@ void CONTROL_ResetHardware()
 	CachedDUTPosition = Off;
 	CachedInductance = L_300uH;
 	LL_Charge(false);
-	LL_Discharge(false);
+	LL_Discharge(true);
 }
 //-----------------------------------------------
 
@@ -123,8 +124,23 @@ static Boolean CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 			break;
 
 		case ACT_CONFIG:
-			CONTROL_CacheVariables();
-			CONTROL_SetDeviceState(DS_InProcess);
+			if(CONTROL_State == DS_Ready)
+			{
+				CONTROL_CacheVariables();
+				CONTROL_SetDeviceState(DS_InProcess);
+			}
+			else
+				if(CONTROL_State == DS_None)
+					*pUserError = ERR_OPERATION_BLOCKED;
+				else
+					*pUserError = ERR_DEVICE_NOT_READY;
+			break;
+
+		case ACT_SAFETY_TRIG_CLEAR:
+			if(CONTROL_State == DS_SafetyTrig)
+				CONTROL_SetDeviceState(DS_None);
+			else
+				*pUserError = ERR_OPERATION_BLOCKED;
 			break;
 
 		default:
@@ -140,10 +156,25 @@ void CONTROL_Idle()
 	CONTROL_BatteryCharge();
 	CONTROL_Commutation();
 	CONTROL_Ressure();
+	CONTROL_Safety();
 
 	// Обработка мастер-запросов по интерфейсу
 	DEVPROFILE_ProcessRequests();
 	CONTROL_WatchDogUpdate();
+}
+//-----------------------------------------------
+
+void CONTROL_Safety()
+{
+	DataTable[REG_SAFETY_STATE] = LL_SafetyCheck();
+
+	if(!LL_SafetyCheck() && (CONTROL_State == DS_Ready || CONTROL_State == DS_InProcess || CONTROL_State == DS_InSelfTest))
+	{
+		LL_Charge(false);
+		LL_Discharge(true);
+
+		CONTROL_SetDeviceState(DS_SafetyTrig);
+	}
 }
 //-----------------------------------------------
 
@@ -153,7 +184,7 @@ void CONTROL_Ressure()
 
 	DataTable[REG_PRESSURE] = LL_MeasurePressure() * DataTable[REG_PRESSURE_K] + DataTable[REG_PRESSURE_B];
 
-	if((CONTROL_State != DS_Ready || CONTROL_State != DS_InProcess) && DataTable[REG_PRESSURE] <= DataTable[REG_PRESSURE_LOW])
+	if((CONTROL_State == DS_Ready || CONTROL_State == DS_InProcess) && DataTable[REG_PRESSURE] <= DataTable[REG_PRESSURE_LOW])
 	{
 		if(!PressureCheckDelay)
 			PressureCheckDelay = CONTROL_TimeCounter + PRESSURE_CHECK_DELAY;
@@ -232,7 +263,7 @@ void CONTROL_SetInductance(Inductance Coil, Inductance *LastCoil)
 
 void CONTROL_Commutation()
 {
-	if(CONTROL_State != DS_Ready && CONTROL_State != DS_InProcess)
+	if(CONTROL_State == DS_Ready && CONTROL_State == DS_InProcess)
 	{
 		if(LastInductance != CachedInductance)
 			CONTROL_SetInductance(CachedInductance, &LastInductance);

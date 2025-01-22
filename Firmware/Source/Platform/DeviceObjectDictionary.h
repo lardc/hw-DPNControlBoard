@@ -17,6 +17,7 @@
 #define ACT_DBG_SAFETY					17	// Получение состояния входа безопасности
 //
 #define ACT_CONFIG						100	// Конфигурация узла по заданным параметрам
+#define ACT_SAFETY_TRIG_CLEAR			101	// Сброс состояния DS_SafetyTrig
 //
 #define ACT_SAVE_TO_ROM					200	// Сохранение пользовательских данных во FLASH процессора
 #define ACT_RESTORE_FROM_ROM			201	// Восстановление данных из FLASH
@@ -53,6 +54,7 @@
 //
 #define REG_CAP_VOLTAGE					200	// Напряжение на конденсаторах, В
 #define REG_PRESSURE					201	// Текущее давление, Бар
+#define REG_SAFETY_STATE				202	// Текущее состояние входа безопасности
 //
 #define REG_FWINFO_SLAVE_NID			256	// Device CAN slave node ID
 #define REG_FWINFO_MASTER_NID			257	// Device CAN master node ID (if presented)
