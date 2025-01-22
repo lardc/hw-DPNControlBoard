@@ -19,6 +19,8 @@
 #define ACT_CONFIG						100	// Конфигурация узла по заданным параметрам
 #define ACT_SAFETY_TRIG_CLEAR			101	// Сброс состояния DS_SafetyTrig
 //
+#define ACT_SELF_TEST					110	// Запуск самотестирования
+//
 #define ACT_SAVE_TO_ROM					200	// Сохранение пользовательских данных во FLASH процессора
 #define ACT_RESTORE_FROM_ROM			201	// Восстановление данных из FLASH
 #define ACT_RESET_TO_DEFAULT			202	// Сброс DataTable в состояние по умолчанию
@@ -77,6 +79,8 @@
 #define DF_COIL1						3	// Ошибка положения контактора катушки 1
 #define DF_COIL2						4	// Ошибка положения контактора катушки 2
 #define DF_PRESSURE						5	// Нет давления
+#define DF_CHARGE						6	// Проблема с зарядом конденсаторов
+#define DF_DISCHARGE					7	// Проблема с разрядом конденсаторов
 
 // Warning
 #define WARNING_NONE					0	// Предупреждений нет

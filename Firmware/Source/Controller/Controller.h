@@ -40,11 +40,21 @@ typedef enum __ChargeState
 // Variables
 //
 extern volatile Int64U CONTROL_TimeCounter;
+extern DeviceState CONTROL_State;
+extern Inductance CachedInductance;
+extern Inductance LastInductance;
+extern DUTPosition CachedDUTPosition;
+extern DUTPosition LastDUTPosition;
 
 
 // Functions
 void CONTROL_Init();
 void CONTROL_Idle();
 void CONTROL_SwitchToFault(Int16U Reason);
+void CONTROL_SetDUTPosition(DUTPosition NewPosition, DUTPosition *LastPosition);
+void CONTROL_SetInductance(Inductance Coil, Inductance *LastCoil);
+bool CONTROL_CheckInductance(Inductance Coil);
+bool CONTROL_CheckDUTPosition(DUTPosition Position);
+void CONTROL_SetDeviceState(DeviceState NewState);
 
 #endif // __CONTROLLER_H

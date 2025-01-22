@@ -12,6 +12,7 @@
 #include "math.h"
 #include "InitConfig.h"
 #include "Delay.h"
+#include "SelfTest.h"
 // Types
 //
 typedef void (*FUNC_AsyncDelegate)();
@@ -30,19 +31,14 @@ volatile Int64U CONTROL_TimeCounter = 0;
 
 // Forward functions
 static Boolean CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError);
-void CONTROL_SetDeviceState(DeviceState NewState);
 void CONTROL_ResetToDefaults();
 void CONTROL_ResetData();
 void CONTROL_ResetHardware();
 void CONTROL_WatchDogUpdate();
-void CONTROL_SetDUTPosition(DUTPosition NewPosition, DUTPosition *LastPosition);
-void CONTROL_SetInductance(Inductance Coil, Inductance *LastCoil);
 void CONTROL_BatteryCharge();
 void CONTROL_CacheVariables();
 void CONTROL_Commutation();
-void CONTROL_CheckInductance(Inductance Coil);
-void CONTROL_CheckDUTPosition(DUTPosition Position);
-void CONTROL_Ressure();
+void CONTROL_Pressure();
 void CONTROL_Safety();
 
 // Functions
@@ -97,7 +93,12 @@ static Boolean CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 		case ACT_ENABLE_POWER:
 			{
 				if(CONTROL_State == DS_None)
-					CONTROL_SetDeviceState(DS_InSelfTest);
+				{
+					if(DataTable[REG_SELF_TEST_OP_RESULT] == OPRESULT_OK)
+						CONTROL_SetDeviceState(DS_Ready);
+					else
+						CONTROL_SetDeviceState(DS_InSelfTest);
+				}
 				else if(CONTROL_State != DS_Ready)
 					*pUserError = ERR_OPERATION_BLOCKED;
 			}
@@ -143,6 +144,13 @@ static Boolean CONTROL_DispatchAction(Int16U ActionID, pInt16U pUserError)
 				*pUserError = ERR_OPERATION_BLOCKED;
 			break;
 
+		case ACT_SELF_TEST:
+			if(CONTROL_State == DS_Ready || CONTROL_State == DS_None)
+				CONTROL_SetDeviceState(DS_InSelfTest);
+			else
+				*pUserError = ERR_OPERATION_BLOCKED;
+			break;
+
 		default:
 			return DIAG_HandleDiagnosticAction(ActionID, pUserError);
 	}
@@ -155,8 +163,9 @@ void CONTROL_Idle()
 {
 	CONTROL_BatteryCharge();
 	CONTROL_Commutation();
-	CONTROL_Ressure();
+	CONTROL_Pressure();
 	CONTROL_Safety();
+	SELFTEST_Process();
 
 	// Обработка мастер-запросов по интерфейсу
 	DEVPROFILE_ProcessRequests();
@@ -178,13 +187,13 @@ void CONTROL_Safety()
 }
 //-----------------------------------------------
 
-void CONTROL_Ressure()
+void CONTROL_Pressure()
 {
 	static Int64U PressureCheckDelay = 0;
 
 	DataTable[REG_PRESSURE] = LL_MeasurePressure() * DataTable[REG_PRESSURE_K] + DataTable[REG_PRESSURE_B];
 
-	if((CONTROL_State == DS_Ready || CONTROL_State == DS_InProcess) && DataTable[REG_PRESSURE] <= DataTable[REG_PRESSURE_LOW])
+	if((CONTROL_State == DS_Ready || CONTROL_State == DS_InProcess || CONTROL_State == DS_InSelfTest) && DataTable[REG_PRESSURE] <= DataTable[REG_PRESSURE_LOW])
 	{
 		if(!PressureCheckDelay)
 			PressureCheckDelay = CONTROL_TimeCounter + PRESSURE_CHECK_DELAY;
@@ -278,7 +287,7 @@ void CONTROL_Commutation()
 }
 //-----------------------------------------------
 
-void CONTROL_CheckInductance(Inductance Coil)
+bool CONTROL_CheckInductance(Inductance Coil)
 {
 	switch(Coil)
 	{
@@ -306,9 +315,12 @@ void CONTROL_CheckInductance(Inductance Coil)
 				CONTROL_SwitchToFault(DF_COIL2);
 			break;
 	}
-}
 
-void CONTROL_CheckDUTPosition(DUTPosition Position)
+	return (CONTROL_State != DS_Fault) ? true : false;
+}
+//-----------------------------------------------
+
+bool CONTROL_CheckDUTPosition(DUTPosition Position)
 {
 	switch(Position)
 	{
@@ -336,6 +348,8 @@ void CONTROL_CheckDUTPosition(DUTPosition Position)
 				CONTROL_SwitchToFault(DF_BOT_POSITION);
 			break;
 	}
+
+	return (CONTROL_State != DS_Fault) ? true : false;
 }
 //-----------------------------------------------
 
@@ -343,7 +357,7 @@ void CONTROL_BatteryCharge()
 {
 	DataTable[REG_CAP_VOLTAGE] = LL_MeasureHV() * DataTable[REG_VCAP_K] + DataTable[REG_VCAP_B];
 
-	if(CONTROL_State != DS_Ready && CONTROL_State != DS_InProcess)
+	if(CONTROL_State == DS_Ready && CONTROL_State == DS_InProcess)
 	{
 		if((DataTable[REG_CAP_VOLTAGE] - CachedCapVoltage) >= DataTable[REG_CHARGE_THRESHOLD])
 			CapChargeState = ActiveDischarge;
@@ -372,10 +386,13 @@ void CONTROL_BatteryCharge()
 	}
 	else
 	{
-		CapChargeState = ActiveDischarge;
+		if(CONTROL_State != DS_InSelfTest)
+		{
+			CapChargeState = ActiveDischarge;
 
-		LL_Charge(false);
-		LL_Discharge(true);
+			LL_Charge(false);
+			LL_Discharge(true);
+		}
 	}
 
 	if(CONTROL_State == DS_InProcess && LastDUTPosition == CachedDUTPosition && LastInductance == CachedInductance && CapChargeState == PassiveDischarge)
@@ -392,6 +409,9 @@ void CONTROL_CacheVariables()
 
 void CONTROL_SwitchToFault(Int16U Reason)
 {
+	if(CONTROL_State == DS_InSelfTest)
+		DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
+
 	CONTROL_ResetToDefaults();
 	
 	CONTROL_SetDeviceState(DS_Fault);
