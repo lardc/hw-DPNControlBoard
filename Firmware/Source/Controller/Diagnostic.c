@@ -72,6 +72,10 @@ bool DIAG_HandleDiagnosticAction(Int16U ActionID, Int16U *pUserError)
 			DataTable[REG_DBG] = LL_MeasurePressure();
 			break;
 
+		case ACT_DBG_SAFETY:
+			DataTable[REG_DBG] = LL_SafetyCheck();
+			break;
+
 		default:
 			return false;
 	}

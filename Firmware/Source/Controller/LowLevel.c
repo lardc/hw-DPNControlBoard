@@ -51,25 +51,25 @@ void LL_Discharge(bool State)
 
 bool LL_CheckTopPosition()
 {
-	return GPIO_GetState(GPIO_CONT1);
+	return GPIO_GetState(GPIO_CONT_SENS1);
 }
 //------------------------------------
 
 bool LL_CheckBotPosition()
 {
-	return GPIO_GetState(GPIO_CONT2);
+	return GPIO_GetState(GPIO_CONT_SENS2);
 }
 //------------------------------------
 
 bool LL_CheckCoil1()
 {
-	return GPIO_GetState(GPIO_CONT3);
+	return GPIO_GetState(GPIO_CONT_SENS3);
 }
 //------------------------------------
 
 bool LL_CheckCoil2()
 {
-	return GPIO_GetState(GPIO_CONT4);
+	return GPIO_GetState(GPIO_CONT_SENS4);
 }
 //------------------------------------
 
@@ -82,5 +82,11 @@ Int16U LL_MeasureHV()
 Int16U LL_MeasurePressure()
 {
 	return ADC_Measure(ADC1, ADC_PRESSURE_CHANNEL);
+}
+//------------------------------------
+
+bool LL_SafetyCheck()
+{
+	return GPIO_GetState(GPIO_SAFETY);
 }
 //------------------------------------

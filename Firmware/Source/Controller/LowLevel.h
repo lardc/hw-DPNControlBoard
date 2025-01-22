@@ -19,5 +19,6 @@ bool LL_CheckCoil1();
 bool LL_CheckCoil2();
 Int16U LL_MeasureHV();
 Int16U LL_MeasurePressure();
+bool LL_SafetyCheck();
 
 #endif // __LOWLEVEL_H
