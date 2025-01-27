@@ -12,10 +12,10 @@ const TableItemConstraint Constraint[DATA_TABLE_WP_START] = {
 		{COEF_K_MIN, COEF_K_MAX, PRESSURE_K_DEF},								// 3
 		{COEF_B_MIN, COEF_B_MAX, PRESSURE_B_DEF},								// 4
 		{PRESSURE_LOW_MIN, PRESSURE_LOW_MAX, PRESSURE_LOW_DEF},					// 5
-		{0, 0, 0},																// 6
-		{0, 0, 0},																// 7
-		{0, 0, 0},																// 8
-		{0, 0, 0},																// 9
+		{PRESSURE_CHECK_MIN, PRESSURE_CHECK_MAX, PRESSURE_CHECK_DEF},			// 6
+		{CONTACTOR_DELAY_MIN, CONTACTOR_DELAY_MAX, CONTACTOR_DELAY_DEF},		// 7
+		{CHARGE_TIMEOUT_MIN, CHARGE_TIMEOUT_MAX, CHARGE_TIMEOUT_DEF},			// 8
+		{DISCHARGE_TIMEOUT_MIN, DISCHARGE_TIMEOUT_MAX, DISCHARGE_TIMEOUT_DEF},	// 9
 		{0, 0, 0},																// 10
 		{0, 0, 0},																// 11
 		{0, 0, 0},																// 12

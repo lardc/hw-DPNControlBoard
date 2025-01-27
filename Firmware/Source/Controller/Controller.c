@@ -196,7 +196,7 @@ void CONTROL_Pressure()
 	if((CONTROL_State == DS_Ready || CONTROL_State == DS_InProcess || CONTROL_State == DS_InSelfTest) && DataTable[REG_PRESSURE] <= DataTable[REG_PRESSURE_LOW])
 	{
 		if(!PressureCheckDelay)
-			PressureCheckDelay = CONTROL_TimeCounter + PRESSURE_CHECK_DELAY;
+			PressureCheckDelay = CONTROL_TimeCounter + DataTable[REG_PRESSURE_CHECK_DELAY];
 		else if(CONTROL_TimeCounter >= PressureCheckDelay)
 			CONTROL_SwitchToFault(DF_PRESSURE);
 	}
@@ -216,7 +216,7 @@ void CONTROL_SetDUTPosition(DUTPosition NewPosition, DUTPosition *LastPosition)
 		LL_SetTopPosition(false);
 		LL_SetBotPosition(false);
 
-		DelayCounter = CONTROL_TimeCounter + CONTACTOR_DELAY;
+		DelayCounter = CONTROL_TimeCounter + DataTable[REG_CONTACTOR_DELAY];
 	}
 	else
 	{
@@ -225,7 +225,7 @@ void CONTROL_SetDUTPosition(DUTPosition NewPosition, DUTPosition *LastPosition)
 			if(!Finished)
 			{
 				(NewPosition == Top) ? LL_SetTopPosition(true) : LL_SetBotPosition(true);
-				DelayCounter = CONTROL_TimeCounter + CONTACTOR_DELAY;
+				DelayCounter = CONTROL_TimeCounter + DataTable[REG_CONTACTOR_DELAY];
 				Finished = true;
 			}
 			else
@@ -260,7 +260,7 @@ void CONTROL_SetInductance(Inductance Coil, Inductance *LastCoil)
 			LL_SwitchCoil2(true);
 		}
 
-		DelayCounter = CONTROL_TimeCounter + CONTACTOR_DELAY;
+		DelayCounter = CONTROL_TimeCounter + DataTable[REG_CONTACTOR_DELAY];
 	}
 	else
 	{
@@ -364,13 +364,13 @@ void CONTROL_BatteryCharge()
 		if(((DataTable[REG_CAP_VOLTAGE] - CachedCapVoltage) >= DataTable[REG_CHARGE_THRESHOLD]) && (CapChargeState != ActiveDischarge))
 		{
 			CapChargeState = ActiveDischarge;
-			Timeout = CONTROL_State + DISCHARGE_TIMEOUT;
+			Timeout = CONTROL_State + DataTable[REG_DISCHARGE_TIMEOUT];
 		}
 		else if((DataTable[REG_CAP_VOLTAGE] - CachedCapVoltage) <= ((-1) * DataTable[REG_CHARGE_THRESHOLD]))
 		{
 			if(CapChargeState != ActiveDischarge)
 			{
-				Timeout = CONTROL_State + CHARGE_TIMEOUT;
+				Timeout = CONTROL_State + DataTable[REG_CHARGE_TIMEOUT];
 				CapChargeState = Charge;
 			}
 		}
