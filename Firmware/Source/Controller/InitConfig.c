@@ -78,6 +78,8 @@ void INITCFG_ConfigADC()
 	ADC_Calibration(ADC1);
 	ADC_SoftTrigConfig(ADC1);
 	ADC_ChannelSeqReset(ADC1);
+	ADC_ChannelSet_SampleTime(ADC1, ADC_HV_CHANNEL, ADC_SMPL_TIME_181_5);
+	ADC_ChannelSet_SampleTime(ADC1, ADC_PRESSURE_CHANNEL, ADC_SMPL_TIME_181_5);
 	ADC_Enable(ADC1);
 	ADC_SamplingStart(ADC1);
 }
