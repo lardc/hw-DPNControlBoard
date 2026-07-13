@@ -25,9 +25,9 @@ typedef enum __DUTPosition
 
 typedef enum __Inductance
 {
-	L_300uH				= 0,
-	L_100uH				= 1,
-	L_30uH				= 2
+	L_300uH				= 300,
+	L_100uH				= 100,
+	L_30uH				= 30
 }Inductance;
 
 typedef enum __ChargeState

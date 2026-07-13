@@ -62,6 +62,8 @@
 #define REG_CAP_VOLTAGE					200	// Напряжение на конденсаторах, В
 #define REG_PRESSURE					201	// Текущее давление, Бар
 #define REG_SAFETY_STATE				202	// Текущее состояние входа безопасности
+#define REG_INDUCTANCE					203	// Выбранная индуктивность
+#define REG_MEASURE_DURATION			204	// Расчётное время измерения, мкс
 //
 #define REG_FWINFO_SLAVE_NID			256	// Device CAN slave node ID
 #define REG_FWINFO_MASTER_NID			257	// Device CAN master node ID (if presented)
@@ -92,6 +94,9 @@
 
 // Problem
 #define PROBLEM_NONE					0
+#define PROBLEM_DURATION_TOO_LOW		1	// Расчётное время измерения меньше минимального
+#define PROBLEM_DURATION_TOO_HIGH		2	// Расчётное время измерения больше максимального
+#define PROBLEM_INDUCTANCE				3	// Не удалось подобрать индуктивность
 
 // User Errors
 #define ERR_NONE						0

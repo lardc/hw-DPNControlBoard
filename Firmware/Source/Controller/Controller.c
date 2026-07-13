@@ -13,6 +13,7 @@
 #include "InitConfig.h"
 #include "Delay.h"
 #include "SelfTest.h"
+#include "Constraints.h"
 // Types
 //
 typedef void (*FUNC_AsyncDelegate)();
@@ -22,6 +23,8 @@ DeviceState CONTROL_State = DS_None;
 static Boolean CycleActive = false;
 ChargeState	CapChargeState = PassiveDischarge;
 float 	CachedCapVoltage = 0;
+float 	CachedCurrent = 0;
+float 	CachedMaxDuration = 0;
 DUTPosition CachedDUTPosition = Off;
 DUTPosition LastDUTPosition = Off;
 Inductance CachedInductance = L_300uH;
@@ -37,6 +40,7 @@ void CONTROL_ResetHardware();
 void CONTROL_WatchDogUpdate();
 void CONTROL_BatteryCharge();
 void CONTROL_CacheVariables();
+static Boolean CONTROL_CalculateInductance();
 void CONTROL_Commutation();
 void CONTROL_Pressure();
 void CONTROL_Safety();
@@ -72,6 +76,8 @@ void CONTROL_ResetData()
 	DataTable[REG_WARNING] = WARNING_NONE;
 	DataTable[REG_PROBLEM] = PROBLEM_NONE;
 	DataTable[REG_OP_RESULT] = OPRESULT_NONE;
+	DataTable[REG_INDUCTANCE] = 0;
+	DataTable[REG_MEASURE_DURATION] = 0;
 }
 //-----------------------------------------------
 
@@ -235,6 +241,47 @@ void CONTROL_SetDUTPosition(DUTPosition NewPosition, DUTPosition *LastPosition)
 			}
 		}
 	}
+}
+//-----------------------------------------------
+
+static Boolean CONTROL_CalculateInductance()
+{
+	static const Inductance InductanceList[] = {L_300uH, L_100uH, L_30uH};
+	Int16U i;
+
+	if(CachedCapVoltage <= 0)
+	{
+		DataTable[REG_PROBLEM] = PROBLEM_INDUCTANCE;
+		return false;
+	}
+
+	for(i = 0; i < 3; ++i)
+	{
+		float Duration = (CachedCurrent * (float)InductanceList[i]) / CachedCapVoltage;
+
+		if((Duration >= DURATION_MIN) && (Duration <= CachedMaxDuration))
+		{
+			CachedInductance = InductanceList[i];
+			DataTable[REG_INDUCTANCE] = InductanceList[i];
+			DataTable[REG_MEASURE_DURATION] = Duration;
+			DataTable[REG_PROBLEM] = PROBLEM_NONE;
+			return true;
+		}
+	}
+
+	{
+		float DurationAtMaxL = (CachedCurrent * (float)L_300uH) / CachedCapVoltage;
+		float DurationAtMinL = (CachedCurrent * (float)L_30uH) / CachedCapVoltage;
+
+		if(DurationAtMaxL < DURATION_MIN)
+			DataTable[REG_PROBLEM] = PROBLEM_DURATION_TOO_LOW;
+		else if(DurationAtMinL > CachedMaxDuration)
+			DataTable[REG_PROBLEM] = PROBLEM_DURATION_TOO_HIGH;
+		else
+			DataTable[REG_PROBLEM] = PROBLEM_INDUCTANCE;
+	}
+
+	return false;
 }
 //-----------------------------------------------
 
@@ -420,9 +467,12 @@ void CONTROL_BatteryCharge()
 void CONTROL_CacheVariables()
 {
 	CachedCapVoltage = DataTable[REG_VOLTAGE];
+	CachedCurrent = DataTable[REG_CURRENT];
+	CachedMaxDuration = DataTable[REG_MAX_DURATION];
 	CachedDUTPosition = DataTable[REG_DUT_POSITION];
-	CachedInductance = 0;
+	CONTROL_CalculateInductance();
 }
+//-----------------------------------------------
 
 void CONTROL_SwitchToFault(Int16U Reason)
 {
