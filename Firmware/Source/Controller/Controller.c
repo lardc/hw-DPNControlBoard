@@ -421,7 +421,7 @@ void CONTROL_CacheVariables()
 {
 	CachedCapVoltage = DataTable[REG_VOLTAGE];
 	CachedDUTPosition = DataTable[REG_DUT_POSITION];
-	CachedInductance = DataTable[REG_INDUCTANCE];
+	CachedInductance = 0;
 }
 
 void CONTROL_SwitchToFault(Int16U Reason)

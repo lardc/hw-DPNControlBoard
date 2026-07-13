@@ -58,6 +58,14 @@
 #define DISCHARGE_TIMEOUT_MIN		1000
 #define DISCHARGE_TIMEOUT_MAX		10000
 #define DISCHARGE_TIMEOUT_DEF		5000
+//
+#define CURRENT_MIN					30
+#define CURRENT_MAX					900
+#define CURRENT_DEF					100
+//
+#define DURATION_MIN				10
+#define DURATION_MAX				200
+#define DURATION_DEF				100
 
 
 // Types

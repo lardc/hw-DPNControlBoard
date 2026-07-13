@@ -136,8 +136,8 @@ const TableItemConstraint Constraint[DATA_TABLE_WP_START] = {
 		{0, 0, 0},																// 127
 		{VOLTAGE_MIN, VOLTAGE_MAX, VOLTAGE_DEF},								// 128
 		{Off, Bot, Off},														// 129
-		{L_300uH, L_30uH, L_300uH},												// 130
-		{0, 0, 0},																// 131
+		{CURRENT_MIN, CURRENT_MAX, CURRENT_DEF},								// 130
+		{DURATION_MIN, DURATION_MAX, DURATION_DEF},								// 131
 		{0, 0, 0},																// 132
 		{0, 0, 0},																// 133
 		{0, 0, 0},																// 134

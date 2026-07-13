@@ -45,7 +45,8 @@
 // Несохраняемы регистры чтения-записи
 #define REG_VOLTAGE						128	// Напряжение испытания, В
 #define REG_DUT_POSITION				129	// Позиция DUT
-#define REG_INDUCTANCE					130	// Задание индуктивности силового контура
+#define REG_CURRENT						130	// Ток испытания, А
+#define REG_MAX_DURATION				131	// Максимальное время измерения, мкс
 //
 #define REG_DBG							150	// Отладочный регистр
 
