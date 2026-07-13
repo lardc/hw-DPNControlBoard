@@ -18,6 +18,7 @@ typedef enum __SelfTestState
 
 // Functions
 //
+void SELFTEST_Reset();
 void SELFTEST_Process();
 
 #endif /* CONTROLLER_SELFTEST_H_ */

@@ -85,6 +85,13 @@ void CONTROL_ResetHardware()
 {
 	CachedDUTPosition = Off;
 	CachedInductance = L_300uH;
+	LastDUTPosition = Off;
+	LastInductance = L_300uH;
+
+	LL_SetTopPosition(false);
+	LL_SetBotPosition(false);
+	LL_SwitchCoil1(false);
+	LL_SwitchCoil2(false);
 	LL_Charge(false);
 	LL_Discharge(true);
 }
@@ -312,14 +319,17 @@ void CONTROL_SetInductance(Inductance Coil, Inductance *LastCoil)
 	else
 	{
 		if(CONTROL_TimeCounter >= DelayCounter)
+		{
 			*LastCoil = Coil;
+			DelayCounter = 0;
+		}
 	}
 }
 //-----------------------------------------------
 
 void CONTROL_Commutation()
 {
-	if(CONTROL_State == DS_Ready && CONTROL_State == DS_InProcess)
+	if(CONTROL_State == DS_Ready || CONTROL_State == DS_InProcess)
 	{
 		if(LastInductance != CachedInductance)
 			CONTROL_SetInductance(CachedInductance, &LastInductance);
@@ -355,7 +365,7 @@ bool CONTROL_CheckInductance(Inductance Coil)
 			break;
 
 		case L_30uH:
-			if(LL_CheckCoil1())
+			if(!LL_CheckCoil1())
 				CONTROL_SwitchToFault(DF_COIL1);
 
 			if(!LL_CheckCoil2())
@@ -406,18 +416,18 @@ void CONTROL_BatteryCharge()
 
 	DataTable[REG_CAP_VOLTAGE] = LL_MeasureHV() * DataTable[REG_VCAP_K] + DataTable[REG_VCAP_B];
 
-	if(CONTROL_State == DS_Ready && CONTROL_State == DS_InProcess)
+	if(CONTROL_State == DS_Ready || CONTROL_State == DS_InProcess)
 	{
 		if(((DataTable[REG_CAP_VOLTAGE] - CachedCapVoltage) >= DataTable[REG_CHARGE_THRESHOLD]) && (CapChargeState != ActiveDischarge))
 		{
 			CapChargeState = ActiveDischarge;
-			Timeout = CONTROL_State + DataTable[REG_DISCHARGE_TIMEOUT];
+			Timeout = CONTROL_TimeCounter + DataTable[REG_DISCHARGE_TIMEOUT];
 		}
 		else if((DataTable[REG_CAP_VOLTAGE] - CachedCapVoltage) <= ((-1) * DataTable[REG_CHARGE_THRESHOLD]))
 		{
 			if(CapChargeState != ActiveDischarge)
 			{
-				Timeout = CONTROL_State + DataTable[REG_CHARGE_TIMEOUT];
+				Timeout = CONTROL_TimeCounter + DataTable[REG_CHARGE_TIMEOUT];
 				CapChargeState = Charge;
 			}
 		}
@@ -477,7 +487,10 @@ void CONTROL_CacheVariables()
 void CONTROL_SwitchToFault(Int16U Reason)
 {
 	if(CONTROL_State == DS_InSelfTest)
+	{
 		DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_FAIL;
+		SELFTEST_Reset();
+	}
 
 	CONTROL_ResetToDefaults();
 	

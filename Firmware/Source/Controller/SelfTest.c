@@ -18,6 +18,13 @@ Int64U Timeout = 0;
 
 // Functions
 //
+void SELFTEST_Reset()
+{
+	State = STS_None;
+	Timeout = 0;
+}
+//------------------------------
+
 void SELFTEST_Process()
 {
 	if(CONTROL_State == DS_InSelfTest)
@@ -26,7 +33,7 @@ void SELFTEST_Process()
 		{
 			case STS_None:
 				DataTable[REG_SELF_TEST_OP_RESULT] = OPRESULT_NONE;
-				Timeout = CONTROL_State + DataTable[REG_CHARGE_TIMEOUT];
+				Timeout = CONTROL_TimeCounter + DataTable[REG_CHARGE_TIMEOUT];
 				LL_Discharge(false);
 				LL_Charge(true);
 				State = STS_Charge;
@@ -37,13 +44,13 @@ void SELFTEST_Process()
 				{
 					LL_Charge(false);
 					LL_Discharge(true);
-					Timeout = CONTROL_State + DataTable[REG_DISCHARGE_TIMEOUT];
+					Timeout = CONTROL_TimeCounter + DataTable[REG_DISCHARGE_TIMEOUT];
 
 					State = STS_Discharge;
 				}
 				else
 				{
-					if(CONTROL_State >= Timeout)
+					if(CONTROL_TimeCounter >= Timeout)
 						CONTROL_SwitchToFault(DF_CHARGE);
 				}
 				break;
@@ -56,7 +63,7 @@ void SELFTEST_Process()
 				}
 				else
 				{
-					if(CONTROL_State >= Timeout)
+					if(CONTROL_TimeCounter >= Timeout)
 						CONTROL_SwitchToFault(DF_DISCHARGE);
 				}
 				break;
@@ -114,7 +121,7 @@ void SELFTEST_Process()
 					if(CONTROL_CheckDUTPosition(LastDUTPosition))
 					{
 						CachedDUTPosition = Off;
-						State = STS_CheckBotPos;
+						State = STS_CheckOffPos;
 					}
 				break;
 
