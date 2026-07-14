@@ -3,6 +3,7 @@
 
 // Includes
 #include "stdinc.h"
+#include "Global.h"
 
 // Types
 typedef enum __DeviceState
@@ -18,9 +19,9 @@ typedef enum __DeviceState
 
 typedef enum __DUTPosition
 {
-	Off					= 0,
-	Top					= 1,
-	Bot					= 2
+	Off					= POSITION_OFF,
+	Top					= POSITION_TOP,
+	Bot					= POSITION_BOT
 } DUTPosition;
 
 typedef enum __Inductance

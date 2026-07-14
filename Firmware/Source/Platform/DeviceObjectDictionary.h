@@ -9,7 +9,7 @@
 //
 #define ACT_DBG_SET_TOP_POSITION		10	// Установить тест верхнего ключа в отладочном режиме
 #define ACT_DBG_SET_BOT_POSITION		11	// Установить тест нижнего ключа в отладочном режиме
-#define ACT_DBG_SET_COIL				12	// Установить индуктивность в отладочном режиме
+#define ACT_DBG_SET_COIL				12	// Уравление катушками в отладочном режиме
 #define ACT_DBG_CHARGE					13	// Управление зарядом в отладочном режиме
 #define ACT_DBG_DISCHARGE				14	// Управление разрядом в отладочном режиме
 #define ACT_DBG_HV_MEASURE				15	// Получение сырых данных HV напряжения в отладочном режиме
