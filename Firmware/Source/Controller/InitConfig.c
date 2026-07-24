@@ -33,7 +33,6 @@ void INITCFG_ConfigGPIO()
 	GPIO_InitPushPullOutput(GPIO_CONT2);
 	GPIO_InitPushPullOutput(GPIO_CONT3);
 	GPIO_InitPushPullOutput(GPIO_CONT4);
-	GPIO_InitPushPullOutput(GPIO_CONT5);
 	GPIO_InitPushPullOutput(GPIO_CHARGE);
 	GPIO_InitPushPullOutput(GPIO_DISCHARGE);
 
@@ -43,7 +42,6 @@ void INITCFG_ConfigGPIO()
 	GPIO_SetState(GPIO_CONT2, false);
 	GPIO_SetState(GPIO_CONT3, false);
 	GPIO_SetState(GPIO_CONT4, false);
-	GPIO_SetState(GPIO_CONT5, false);
 	GPIO_SetState(GPIO_CHARGE, false);
 	GPIO_SetState(GPIO_DISCHARGE, false);
 	
@@ -80,7 +78,10 @@ void INITCFG_ConfigADC()
 	ADC_Calibration(ADC1);
 	ADC_SoftTrigConfig(ADC1);
 	ADC_ChannelSeqReset(ADC1);
+	ADC_ChannelSet_SampleTime(ADC1, ADC_HV_CHANNEL, ADC_SMPL_TIME_181_5);
+	ADC_ChannelSet_SampleTime(ADC1, ADC_PRESSURE_CHANNEL, ADC_SMPL_TIME_181_5);
 	ADC_Enable(ADC1);
+	ADC_SamplingStart(ADC1);
 }
 //------------------------------------
 

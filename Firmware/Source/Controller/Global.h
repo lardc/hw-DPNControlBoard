@@ -21,5 +21,12 @@
 // Параметры аналоговой подсистемы
 #define ADC_REF_VOLTAGE				3300.0f			// Опорное напряжение (в мВ)
 #define ADC_RESOLUTION				4095
+#define ADC_HV_CHANNEL				1
+#define ADC_PRESSURE_CHANNEL		2
+
+// Позиции DUT
+#define POSITION_OFF				0
+#define POSITION_BOT				1
+#define POSITION_TOP				2
 
 #endif // __GLOBAL_H

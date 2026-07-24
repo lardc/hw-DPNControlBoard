@@ -26,86 +26,46 @@
 #define COEF_B_MIN					-INT16S_MAX
 #define COEF_B_MAX					INT16S_MAX
 //
-#define REGULATOR_QP_MIN			0
-#define REGULATOR_QP_MAX			10
-#define REGULATOR_QP_DEF			0
+#define VCAP_K_DEF					1.0
+#define VCAP_B_DEF					0
 //
-#define REGULATOR_QI_MIN			0
-#define REGULATOR_QI_MAX			10
-#define REGULATOR_QI_DEF			0
+#define CHARGE_THRESHOLD_MIN		1.0
+#define CHARGE_THRESHOLD_MAX		10
+#define CHARGE_THRESHOLD_DEF		5
 //
-#define REGULATOR_QIMAX_MIN			0
-#define REGULATOR_QIMAX_MAX			1000
-#define REGULATOR_QIMAX_DEF			1000
+#define VOLTAGE_MIN					100
+#define VOLTAGE_MAX					1800
+#define VOLTAGE_DEF					1000
 //
-#define ALLOWED_ERR_MIN				0
-#define ALLOWED_ERR_MAX				15
-#define ALLOWED_ERR_DEF				0
+#define PRESSURE_K_DEF				1
+#define PRESSURE_B_DEF				0
+#define PRESSURE_LOW_MIN			2
+#define PRESSURE_LOW_MAX			8
+#define PRESSURE_LOW_DEF			5
 //
-#define FOLLOWING_ERR_CNT_MIN		0
-#define FOLLOWING_ERR_CNT_MAX		30
-#define FOLLOWING_ERR_CNT_DEF		5
+#define PRESSURE_CHECK_MIN			0
+#define PRESSURE_CHECK_MAX			1000
+#define PRESSURE_CHECK_DEF			500
 //
-#define YES							1
-#define NO							0
+#define CONTACTOR_DELAY_MIN			0
+#define CONTACTOR_DELAY_MAX			1000
+#define CONTACTOR_DELAY_DEF			500
 //
-#define LCSU_CURRENT_MIN			1000
-#define LCSU_CURRENT_MAX			6500
-#define LCSU_CURRENT_DEF			1700
+#define CHARGE_TIMEOUT_MIN			10000
+#define CHARGE_TIMEOUT_MAX			60000
+#define CHARGE_TIMEOUT_DEF			40000
 //
-#define LCSU_START_NID_MIN			110
-#define LCSU_START_NID_MAX			119
-#define LCSU_START_NID_DEF			110
+#define DISCHARGE_TIMEOUT_MIN		1000
+#define DISCHARGE_TIMEOUT_MAX		10000
+#define DISCHARGE_TIMEOUT_DEF		5000
 //
-#define LONG_TIMEOUT_MIN			1000
-#define LONG_TIMEOUT_MAX			30000
-#define LONG_TIMEOUT_DEF			1000
+#define CURRENT_MIN					30
+#define CURRENT_MAX					900
+#define CURRENT_DEF					100
 //
-#define VG_EDGE_TIME_MIN			500
-#define VG_EDGE_TIME_MAX			2000
-#define VG_EDGE_TIME_DEF			1000
-//
-#define R_SHUNT_MIN					75
-#define R_SHUNT_MAX					1000
-#define R_SHUNT_DEF					750
-//
-#define I_THRESHOLD_MIN				200
-#define I_THRESHOLD_MAX				12000
-#define I_THRESHOLD_DEF				300
-//
-#define ID_SETPOINT_MIN				50
-#define ID_SETPOINT_MAX				1700
-#define ID_SETPOINT_DEF				500
-//
-#define VG_SETPOINT_MIN				5
-#define VG_SETPOINT_MAX				22
-#define VG_SETPOINT_DEF				15
-//
-#define MSR_DELAY_MIN				0
-#define MSR_DELAY_MAX				20
-#define MSR_DELAY_DEF				15
-//
-#define MSR_TIME_MIN				1
-#define MSR_TIME_MAX				20
-#define MSR_TIME_DEF				4
-//
-#define IG_THRESHOLD_MIN			10
-#define IG_THRESHOLD_MAX			100
-#define IG_THRESHOLD_DEF			30
-//
-#define COEF_ID_R0_K_DEF			1
-#define COEF_ID_R1_K_DEF			1
-#define COEF_VD_K_DEF				1
-#define COEF_VG_K_DEF				1
-#define COEF_VG_SET_K_DEF			1
-#define COEF_IG_K_DEF				1
-//
-#define COEF_ID_R0_B_DEF			1
-#define COEF_ID_R1_B_DEF			1
-#define COEF_VD_B_DEF				1
-#define COEF_VG_B_DEF				1
-#define COEF_VG_SET_B_DEF			1
-#define COEF_IG_B_DEF				1
+#define DURATION_MIN				10
+#define DURATION_MAX				200
+#define DURATION_DEF				100
 
 
 // Types

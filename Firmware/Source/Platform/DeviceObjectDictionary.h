@@ -7,16 +7,19 @@
 #define ACT_FAULT_CLEAR					3	// Очистка fault
 #define ACT_WARNING_CLEAR				4	// Очистка warning
 //
-#define ACT_DBG_PULSE_V_GATE			10	// Импульс напряжения управления IGBT
-#define ACT_DBG_PULSE_SYNC_OSC			11	// Импульс синхронизации для осциллографа
-#define ACT_DBG_VIN_ST					12	// Переключение канала напряжения в режим самотестирования
-#define ACT_DBG_PULSE_SYNC_LCSU			13	// Импульс синхронизации LCSU
-#define ACT_DBG_EXT_INDICATION			14	// Управление внешней индикацией
+#define ACT_DBG_SET_TOP_POSITION		10	// Установить тест верхнего ключа в отладочном режиме
+#define ACT_DBG_SET_BOT_POSITION		11	// Установить тест нижнего ключа в отладочном режиме
+#define ACT_DBG_SET_COIL				12	// Уравление катушками в отладочном режиме
+#define ACT_DBG_CHARGE					13	// Управление зарядом в отладочном режиме
+#define ACT_DBG_DISCHARGE				14	// Управление разрядом в отладочном режиме
+#define ACT_DBG_HV_MEASURE				15	// Получение сырых данных HV напряжения в отладочном режиме
+#define ACT_DBG_PRESSURE_MEASURE		16	// Получение сырых данных давления в отладочном режиме
+#define ACT_DBG_SAFETY					17	// Получение состояния входа безопасности
 //
-#define ACT_START_TEST					100	// Запуск процесса измерения
-#define ACT_STOP_TEST					101	// Остановка процесса измерения
+#define ACT_CONFIG						100	// Конфигурация узла по заданным параметрам
+#define ACT_SAFETY_TRIG_CLEAR			101	// Сброс состояния DS_SafetyTrig
 //
-#define ACT_START_SELF_TEST				105	// Запуск самотестирования
+#define ACT_SELF_TEST					110	// Запуск самотестирования
 //
 #define ACT_SAVE_TO_ROM					200	// Сохранение пользовательских данных во FLASH процессора
 #define ACT_RESTORE_FROM_ROM			201	// Восстановление данных из FLASH
@@ -27,73 +30,23 @@
 
 // Регистры
 // Сохраняемые регистры
-#define REG_ID_R0_P2					0	// Диапазон 0 - Коэффициент точной корректировки Id P2
-#define REG_ID_R0_P1					1	// Диапазон 0 - Коэффициент точной корректировки Id P1
-#define REG_ID_R0_P0					2	// Диапазон 0 - Коэффициент точной корректировки Id P0
-#define REG_ID_R0_K						3	// Диапазон 0 - Коэффициент пересчёта напряжения АЦП в Id
-#define REG_ID_R0_B						4	// Диапазон 0 - Смещение оцифрованного Id
-//
-#define REG_ID_R1_P2					5	// Диапазон 1 - Коэффициент точной корректировки Id P2
-#define REG_ID_R1_P1					6	// Диапазон 1 - Коэффициент точной корректировки Id P1
-#define REG_ID_R1_P0					7	// Диапазон 1 - Коэффициент точной корректировки Id P0
-#define REG_ID_R1_K						8	// Диапазон 1 - Коэффициент пересчёта напряжения АЦП в Id
-#define REG_ID_R1_B						9	// Диапазон 1 - Смещение оцифрованного Id
-//
-#define REG_VD_P2						10	// Коэффициент точной корректировки Vd P2
-#define REG_VD_P1						11	// Коэффициент точной корректировки Vd P1
-#define REG_VD_P0						12	// Коэффициент точной корректировки Vd P0
-#define REG_VD_K						13	// Коэффициент пересчёта напряжения АЦП в Vd
-#define REG_VD_B						14	// Смещение оцифрованного Vd
-//
-#define REG_VG_P2						15	// Коэффициент точной корректировки Vg P2
-#define REG_VG_P1						16	// Коэффициент точной корректировки Vg P1
-#define REG_VG_P0						17	// Коэффициент точной корректировки Vg P0
-#define REG_VG_K						18	// Коэффициент пересчёта напряжения АЦП в Vg
-#define REG_VG_B						19	// Смещение оцифрованного Vg
-//
-#define REG_VG_SET_P2					20	// Коэффициент точной корректировки Vg P2
-#define REG_VG_SET_P1					21	// Коэффициент точной корректировки Vg P1
-#define REG_VG_SET_P0					22	// Коэффициент точной корректировки Vg P0
-#define REG_VG_SET_K					23	// Коэффициент преобразованиия Vg в ЦАП
-#define REG_VG_SET_B					24	// Смещение при преобразовании Vg в ЦАП
-//
-#define REG_IG_P2						25	// Коэффициент точной корректировки Ig P2
-#define REG_IG_P1						26	// Коэффициент точной корректировки Ig P1
-#define REG_IG_P0						27	// Коэффициент точной корректировки Ig P0
-#define REG_IG_K						28	// Коэффициент пересчёта напряжения АЦП в Ig
-#define REG_IG_B						29	// Смещение оцифрованного Ig
-//
-#define REG_ISET_R0_P2					30	// Диапазон 0 - Коэффициент точной корректировки задания прямого тока P2
-#define REG_ISET_R0_P1					31	// Диапазон 0 - Коэффициент точной корректировки задания прямого тока P1
-#define REG_ISET_R0_P0					32	// Диапазон 0 - Коэффициент точной корректировки задания прямого тока P0
-
-#define REG_ISET_R1_P2					50	// Диапазон 1 - Коэффициент точной корректировки задания прямого тока P2
-#define REG_ISET_R1_P1					51	// Диапазон 1 - Коэффициент точной корректировки задания прямого тока P1
-#define REG_ISET_R1_P0					52	// Диапазон 1 - Коэффициент точной корректировки задания прямого тока P0
-//
-#define REG_REGULATOR_QP				33	// Пропорциональный коэффициент регулятора
-#define REG_REGULATOR_QI				34	// Интегральный коэффициент регулятора
-#define REG_REGULATOR_QI_MAX			35	// Максимальное значение интегрального коэффициента регулятора
-#define REG_REGULATOR_ALLOWED_ERR		36	// Максимально допустимая ошибка регулятора
-#define REG_FOLLOWING_ERR_CNT			37	// Максимальное значение счетчика FollowingError
-#define REG_FOLLOWING_ERR_MUTE			38	// Выключение слежения за FollowingError
-//
-#define REG_LCSU_MAX_CURRENT			39	// Максимальный ток с одного LCSU (в А)
-#define REG_LCSU_START_NID				40	// Стартовое значение NodeID для первого LCSU
-#define REG_LCSU_LONG_TIMEOUT			41	// Длинный таймаут по операциям с LCSU (в мс)
-#define REG_VG_EDGE_TIME				42	// Длительность фронта импульса управления (мкс)
-#define REG_LAMP_CTRL					43	// Запрет управление блоком внешнего индикатора
-#define REG_R_SHUNT						44	// Сопротивление шунта (в мкОм)
-#define REG_I_R0_THRESHOLD				45	// Граница нижнего диапазона тока (в А)
-#define REG_IG_THRESHOLD				46	// Значчение тока Ig при выставлении PROBLEM_GATE_SHORT
-#define REG_MSR_DELAY					47	// Задержка измерения Uce, Ice (в тиках)
-#define REG_MSR_TIME					48	// Время измерения Uce, Ice (в тиках)
-#define REG_EMULATION					49  // Включение режима эмуляции
+#define REG_VCAP_K						0	// Коэффициент пересчета АЦП -> В напряжение на конденсаторах
+#define REG_VCAP_B						1	// Смещение пересчета АЦП -> В напряжение на конденсаторах
+#define REG_CHARGE_THRESHOLD			2	// Порог включения заряда или активного разряда, В
+#define REG_PRESSURE_K					3	// Коэффициент пересчета АЦП -> Бар текущего давления
+#define REG_PRESSURE_B					4	// Коэффициент смещения АЦП -> Бар текущего давления
+#define REG_PRESSURE_LOW				5	// Нижний порог допустимого давления, Бар
+#define REG_PRESSURE_CHECK_DELAY		6	// Время задержки повторного измерения давления, мс
+#define REG_CONTACTOR_DELAY				7	// Время ожидания переключения контактора, мс
+#define REG_CHARGE_TIMEOUT				8	// Таймаут заряда конденсаторов, мс
+#define REG_DISCHARGE_TIMEOUT			9	// Таймаут разряда конденсаторов, мс
 //
 
 // Несохраняемы регистры чтения-записи
-#define REG_ID_SETPOINT					128	// Уставка силового тока (в А)
-#define REG_VG_SETPOINT					129	// Уставка напряжения управления (в В)
+#define REG_VOLTAGE						128	// Напряжение испытания, В
+#define REG_DUT_POSITION				129	// Позиция DUT
+#define REG_CURRENT						130	// Ток испытания, А
+#define REG_MAX_DURATION				131	// Максимальное время измерения, мкс
 //
 #define REG_DBG							150	// Отладочный регистр
 
@@ -105,19 +58,12 @@
 #define REG_PROBLEM						196	// Регистр Problem
 #define REG_OP_RESULT					197	// Регистр результата операции
 #define REG_SELF_TEST_OP_RESULT			198	// Регистр результата самотестирования
-#define REG_SUB_STATE					199	// Регистр вспомогательного состояния
 //
-#define REG_RESULT_VD					200	// Измеренное значение прямого напряжения (в мВ)
-#define REG_RESULT_ID					201	// Измеренное значение прямого тока (в А)
-#define REG_RESULT_VG					202	// Измеренное значение напряжения цепи управления (в В)
-//
-#define REG_LCSU_DETECTED				205	// Обнаруженное количество силовых ячеек
-#define REG_ID_MAX						206	// Максимальный ток, получаемый с установки (в А)
-//
-#define REG_BHL_ERROR_CODE				210	// Ошибка интерфейса ВУ: код ошибки
-#define REG_BHL_DEVICE					211	// Ошибка интерфейса ВУ: NID устройства
-#define REG_BHL_FUNCTION				212	// Ошибка интерфейса ВУ: код функции
-#define REG_BHL_EXT_DATA				213	// Ошибка интерфейса ВУ: расширенная информация
+#define REG_CAP_VOLTAGE					200	// Напряжение на конденсаторах, В
+#define REG_PRESSURE					201	// Текущее давление, Бар
+#define REG_SAFETY_STATE				202	// Текущее состояние входа безопасности
+#define REG_INDUCTANCE					203	// Выбранная индуктивность
+#define REG_MEASURE_DURATION			204	// Расчётное время измерения, мкс
 //
 #define REG_FWINFO_SLAVE_NID			256	// Device CAN slave node ID
 #define REG_FWINFO_MASTER_NID			257	// Device CAN master node ID (if presented)
@@ -126,32 +72,7 @@
 #define REG_FWINFO_STR_BEGIN			261	// Begining of the information string record
 // -----------------------------
 
-// Команды LCSU
-#define ACT_LCSU_ENABLE_POWER			1	// Включение блока
-#define ACT_LCSU_DISABLE_POWER			2	// Выключение блока
-#define ACT_LCSU_FAULT_CLEAR			3	// Очистка fault
-#define ACT_LCSU_WARNING_CLEAR			4	// Очистка warning
-//
-#define ACT_LCSU_PULSE_CONFIG			100	// Команда на конфигурацию значения тока
-#define ACT_LCSU_STOP_PROCESS			102	// Команда на на остановку процесса
-// -----------------------------
-
-// Регистры LCSU
-#define REG_LCSU_PULSE_VALUE			128	// Значение амплитуды импульса тока (в А)
-
-#define REG_LCSU_DEV_STATE				192	// Состояние блока
-#define REG_LCSU_FAULT_REASON			193
-#define REG_LCSU_DISABLE_REASON			194
-#define REG_LCSU_WARNING				195
-#define REG_LCSU_PROBLEM				196
-// -----------------------------
-
 // Endpoints
-#define EP_ID							1	// Оцифрованные данные Id
-#define EP_VD							2	// Оцифрованные данные Vd
-#define EP_VG							3	// Оцифрованные данные Vg
-#define EP_VG_ERR						4	// Ошибка регулятора Vg
-#define EP_IG							5	// Оцифрованные данные Ig
 
 // Operation results
 #define OPRESULT_NONE					0	// No information or not finished
@@ -160,26 +81,22 @@
 
 // Fault and disable codes
 #define DF_NONE							0	// Ошибок нет
-#define DF_INTERFACE					1	// Нет ответа от LCSU
-#define DF_LCSU_UNEXPECTED_STATE		2	// Не корректное состояние LCSU
-#define DF_LCSU_STATE_TIMEOUT			3	// Таймаут смены состояния LCSU
-#define DF_LCSU_CURRENT_CONFIG			4	// Ошибка конфигурации LCSU
-#define DF_SELFTEST_VD					5	// Ошибка измерения напряжения в режиме самотестирования
-#define DF_SELFTEST_ID					6	// Ошибка измерения тока в режиме самотестирования
-#define DF_SELFTEST_GATE				7	// Ошибка формирования управления в режиме самотестирования
-#define DF_SVTU_WAIT_TIMEOUT			8	// Ошибка превышения времени установления флага готовности данных DMA
+#define DF_TOP_POSITION					1	// Ошибка положения контактора верхней позиции
+#define DF_BOT_POSITION					2	// Ошибка положения контактора нижней позиции
+#define DF_COIL1						3	// Ошибка положения контактора катушки 1
+#define DF_COIL2						4	// Ошибка положения контактора катушки 2
+#define DF_PRESSURE						5	// Нет давления
+#define DF_CHARGE						6	// Проблема с зарядом конденсаторов
+#define DF_DISCHARGE					7	// Проблема с разрядом конденсаторов
 
 // Warning
 #define WARNING_NONE					0	// Предупреждений нет
-#define WARNING_VOLTAGE_OUT_OF_RANGE	1	// Измеренное напряжение вне рабочего диапазона
-#define WARNING_CURRENT_OUT_OF_RANGE	2	// Измеренный ток вне рабочего диапазона
 
 // Problem
 #define PROBLEM_NONE					0
-#define PROBLEM_FORCED_STOP				1	// Принудительная остановка процесса
-#define PROBLEM_SAFETY					2	// Сработала система безопасности
-#define PROBLEM_GATE_SHORT				3	// КЗ в цепи управления
-#define PROBLEM_GATE_VOLTAGE			4	// Проблема с формирователем напряжения управления
+#define PROBLEM_DURATION_TOO_LOW		1	// Расчётное время измерения меньше минимального
+#define PROBLEM_DURATION_TOO_HIGH		2	// Расчётное время измерения больше максимального
+#define PROBLEM_INDUCTANCE				3	// Не удалось подобрать индуктивность
 
 // User Errors
 #define ERR_NONE						0

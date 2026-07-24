@@ -6,11 +6,9 @@
 #include "Controller.h"
 #include "Global.h"
 #include "DataTable.h"
-#include "Measurement.h"
 
 // Functions
 //
-
 void USART1_IRQHandler()
 {
 	if(ZwSCI_RecieveCheck(USART1))
